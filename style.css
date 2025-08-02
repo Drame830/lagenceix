@@ -429,3 +429,4 @@ footer .mb-6 { margin-bottom: 1.5rem; }
 footer .text-sm { font-size: 0.875rem; }
 footer .space-x-6 > *:not([hidden]) ~ *:not([hidden]) { margin-left: 1.5rem; }
 footer a:hover { text-decoration-line: underline; }
+
