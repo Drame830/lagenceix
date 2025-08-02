@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Marketing Interactif - Agence Digitale (Guinée)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Subtle Accents -->
+    <!-- Application Structure Plan: A dashboard-style, single-page application with a fixed sidebar for navigation. The structure is thematic, guiding the user from high-level analysis (SWOT, Personas) to strategic elements (Objectives, Positioning), then to operational details (Tactics, Budget), and finally to evaluation (KPIs). This non-linear, dashboard approach was chosen for usability, allowing users to quickly jump to any section and interact with data (e.g., filter tactics, view KPI charts) rather than scrolling through a long document. It facilitates both a quick overview and a deep dive into specific areas. -->
+    <!-- Visualization & Content Choices: 
+        - SWOT Analysis: Report Info -> SWOT points. Goal -> Inform/Organize. Viz -> Interactive cards with hover effects. Interaction -> Click/hover to reveal details. Justification -> More engaging than a static list. Method -> HTML/CSS/Tailwind.
+        - Buyer Personas: Report Info -> Persona details. Goal -> Inform/Organize. Viz -> Tabbed content cards. Interaction -> Click tabs to switch between personas. Justification -> Saves space and allows focused comparison. Method -> HTML/JS.
+        - Marketing Tactics: Report Info -> List of tactics. Goal -> Organize/Inform. Viz -> Filterable grid of cards. Interaction -> Filter buttons to show tactics by category (Content, SEO, etc.). Justification -> Allows users to focus on specific action areas. Method -> HTML/JS.
+        - Budget Allocation: Report Info -> Budget categories. Goal -> Compare/Inform. Viz -> Doughnut Chart. Interaction -> Hover to see percentages. Justification -> Clearly shows the proportion of budget for each category. Library -> Chart.js.
+        - KPI Overview: Report Info -> List of KPIs. Goal -> Change/Inform. Viz -> Bar Chart. Interaction -> Hover to see target values. Justification -> Provides a clear visual representation of key performance targets. Library -> Chart.js.
+        - All choices confirm to NO SVG/Mermaid, using HTML/CSS/JS and Chart.js (Canvas) for all visual and interactive elements, supporting the designed dashboard structure. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8; /* Warm neutral background */
+            color: #4A4A4A;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            background-color: #F3EFEA;
+            border-left-color: #D4A373; /* Subtle accent */
+            color: #383838;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        }
+        .btn {
+            transition: all 0.3s ease;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+        }
+        .btn-primary {
+            background-color: #D4A373;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #C39263;
+        }
+        .btn-secondary {
+            background-color: #EFEBE6;
+            color: #4A4A4A;
+        }
+        .btn-secondary.active, .btn-secondary:hover {
+            background-color: #D4A373;
+            color: white;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+    <aside class="w-64 bg-[#F8F5F2] p-6 hidden lg:block fixed h-full">
+        <h1 class="text-2xl font-bold text-[#383838] mb-8">Plan Marketing</h1>
+        <nav id="desktop-nav" class="space-y-2">
+            <a href="#analyse" class="nav-link block font-semibold p-3 rounded-r-lg">Analyse de la Situation</a>
+            <a href="#objectifs" class="nav-link block font-semibold p-3 rounded-r-lg">Objectifs & Stratégie</a>
+            <a href="#tactiques" class="nav-link block font-semibold p-3 rounded-r-lg">Tactiques Marketing</a>
+            <a href="#budget" class="nav-link block font-semibold p-3 rounded-r-lg">Budget & KPIs</a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 lg:ml-64 p-4 sm:p-6 md:p-10">
+        <div class="lg:hidden mb-6">
+             <select id="mobile-nav" class="w-full p-3 border rounded-lg bg-white shadow-sm">
+                <option value="analyse">Analyse de la Situation</option>
+                <option value="objectifs">Objectifs & Stratégie</option>
+                <option value="tactiques">Tactiques Marketing</option>
+                <option value="budget">Budget & KPIs</option>
+            </select>
+        </div>
+
+        <section id="analyse" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-[#383838] mb-2">Analyse de la Situation</h2>
+            <p class="mb-8 text-gray-600">Cette section présente une vue d'ensemble de l'environnement interne et externe de votre agence, "solo" et basée en Guinée. Explorez vos forces, faiblesses, opportunités et menaces (SWOT), et découvrez les profils de vos clients cibles pour comprendre votre positionnement sur le marché local.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold mb-4 text-[#D4A373]">Analyse SWOT</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-semibold text-green-600 mb-2">Forces</h4>
+                            <ul class="list-disc list-inside text-sm space-y-1">
+                                <li>Expertise CM, Graphisme, Facebook Ads</li>
+                                <li>Flexibilité et service personnalisé</li>
+                                <li>Connaissance du marché local Guinéen</li>
+                                <li>Agilité et réactivité</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-red-600 mb-2">Faiblesses</h4>
+                            <ul class="list-disc list-inside text-sm space-y-1">
+                                <li>Capacité limitée (seul employé)</li>
+                                <li>Manque de notoriété initiale</li>
+                                <li>Pas de portfolio établi</li>
+                                <li>Gestion de toutes les fonctions</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-blue-600 mb-2">Opportunités</h4>
+                            <ul class="list-disc list-inside text-sm space-y-1">
+                                <li>Marché digital en croissance en Guinée</li>
+                                <li>Demande pour services locaux et accessibles</li>
+                                <li>Potentiel de partenariats locaux</li>
+                                <li>Spécialisation sur des niches</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-yellow-600 mb-2">Menaces</h4>
+                            <ul class="list-disc list-inside text-sm space-y-1">
+                                <li>Concurrence des freelances locaux</li>
+                                <li>Volatilité économique locale</li>
+                                <li>Difficulté à trouver les premiers clients</li>
+                                <li>Besoin de formation continue</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold mb-4 text-[#D4A373]">Public Cible (Personas)</h3>
+                    <div class="flex border-b mb-4">
+                        <button data-persona="pme" class="persona-tab p-3 font-semibold border-b-2 border-[#D4A373]">PME / Commerçant Local</button>
+                        <button data-persona="jeune" class="persona-tab p-3 font-semibold border-transparent text-gray-500">Jeune Entrepreneur / Startup</button>
+                    </div>
+                    <div id="persona-content">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="objectifs" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-[#383838] mb-2">Objectifs & Stratégie</h2>
+            <p class="mb-8 text-gray-600">Ici, nous définissons votre cap pour le lancement et la croissance initiale. Découvrez vos objectifs SMART qui guident vos actions, votre positionnement unique sur le marché guinéen, et la proposition de valeur qui vous distingue en tant qu'agence "solo" spécialisée.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6 md:col-span-2">
+                    <h3 class="text-xl font-bold mb-4 text-[#D4A373]">Objectifs Marketing (SMART)</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start"><span class="text-[#D4A373] font-bold mr-3">🎯</span> <span><strong class="font-semibold">Notoriété Locale :</strong> Établir une présence en ligne et être reconnu comme expert local en CM/Graphisme/Facebook Ads d'ici 6 mois.</span></li>
+                        <li class="flex items-start"><span class="text-[#D4A373] font-bold mr-3">🎯</span> <span><strong class="font-semibold">Acquisition Clients Initiale :</strong> Acquérir 3 premiers clients payants d'ici 3 mois.</span></li>
+                        <li class="flex items-start"><span class="text-[#D4A373] font-bold mr-3">🎯</span> <span><strong class="font-semibold">Portfolio :</strong> Réaliser 5 études de cas/témoignages clients d'ici 9 mois.</span></li>
+                        <li class="flex items-start"><span class="text-[#D4A373] font-bold mr-3">🎯</span> <span><strong class="font-semibold">Développement Compétences :</strong> Se former sur une nouvelle compétence complémentaire (ex: copywriting) d'ici 6 mois.</span></li>
+                    </ul>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold mb-4 text-[#D4A373]">Positionnement</h3>
+                    <p class="text-gray-600">Votre agence est le partenaire unique en Guinée pour les PME et entrepreneurs, spécialisée dans la gestion de communauté, le graphisme et la publicité Facebook pour une croissance digitale locale.</p>
+                </div>
+                <div class="card p-6 lg:col-span-3">
+                     <h3 class="text-xl font-bold mb-4 text-[#D4A373]">Proposition de Valeur Unique (UVP)</h3>
+                     <p class="text-center text-lg font-medium text-gray-700 p-4 bg-[#F8F5F2] rounded-lg">"En Guinée, je suis votre partenaire unique pour une présence digitale impactante : je gère votre communauté, crée vos visuels et optimise vos publicités Facebook pour une croissance locale mesurable."</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tactiques" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-[#383838] mb-2">Tactiques Marketing</h2>
+            <p class="mb-8 text-gray-600">Découvrez votre plan d'action concret, adapté à une agence "solo" en phase de lancement en Guinée. Cette section détaille les initiatives que vous mettrez en œuvre pour atteindre vos objectifs, en priorisant l'efficacité et la rentabilité.</p>
+            <div class="flex flex-wrap gap-2 mb-6" id="tactics-filter">
+                <button class="btn btn-secondary active" data-filter="all">Toutes</button>
+                <button class="btn btn-secondary" data-filter="contenu">Contenu</button>
+                <button class="btn btn-secondary" data-filter="seo">SEO Local</button>
+                <button class="btn btn-secondary" data-filter="pub">Publicité Facebook</button>
+                <button class="btn btn-secondary" data-filter="reseau">Réseautage & Partenariats</button>
+            </div>
+            <div id="tactics-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+        <section id="budget" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-[#383838] mb-2">Budget & KPIs</h2>
+            <p class="mb-8 text-gray-600">La performance est au cœur de votre démarche. Visualisez la répartition de votre budget marketing initial et suivez les Indicateurs Clés de Performance (KPIs) essentiels pour un lancement réussi et une croissance mesurable de votre agence en Guinée.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold mb-4 text-center text-[#D4A373]">Allocation du Budget Initial</h3>
+                    <div class="chart-container">
+                        <canvas id="budgetChart"></canvas>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold mb-4 text-center text-[#D4A373]">Suivi des KPIs de Lancement</h3>
+                    <div class="chart-container">
+                        <canvas id="kpiChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const personaData = {
+                pme: {
+                    title: 'PME / Commerçant Local (Guinée)',
+                    content: `
+                        <h4 class="font-semibold mb-2">Problèmes :</h4>
+                        <ul class="list-disc list-inside text-sm space-y-1 mb-4">
+                            <li>Pas de présence en ligne ou faible visibilité</li>
+                            <li>Difficulté à attirer de nouveaux clients localement</li>
+                            <li>Manque de temps pour gérer les réseaux sociaux</li>
+                            <li>Besoin de visuels professionnels et attractifs</li>
+                            <li>Ne sait pas comment faire de la publicité Facebook efficace</li>
+                        </ul>
+                        <h4 class="font-semibold mb-2">Objectifs :</h4>
+                        <ul class="list-disc list-inside text-sm space-y-1">
+                            <li>Augmenter la visibilité locale et la clientèle</li>
+                            <li>Avoir une image de marque professionnelle en ligne</li>
+                            <li>Générer plus de trafic (physique ou digital)</li>
+                            <li>Toucher une audience plus large via Facebook</li>
+                        </ul>`
+                },
+                jeune: {
+                    title: 'Jeune Entrepreneur / Startup (Guinée)',
+                    content: `
+                        <h4 class="font-semibold mb-2">Problèmes :</h4>
+                        <ul class="list-disc list-inside text-sm space-y-1 mb-4">
+                            <li>Budget très limité pour le marketing</li>
+                            <li>Besoin urgent d'une identité visuelle forte</li>
+                            <li>Nécessité de lancer rapidement une présence sur les réseaux</li>
+                            <li>Peu de connaissances en marketing digital</li>
+                            <li>Manque de temps pour le marketing</li>
+                        </ul>
+                        <h4 class="font-semibold mb-2">Objectifs :</h4>
+                        <ul class="list-disc list-inside text-sm space-y-1">
+                            <li>Créer une marque et une identité visuelle claire</li>
+                            <li>Générer de l'engagement et une première base de clients</li>
+                            <li>Acquérir les premiers clients à moindre coût</li>
+                            <li>Bénéficier d'un accompagnement personnalisé</li>
+                        </ul>`
+                }
+            };
+
+            const tacticsData = [
+                { title: 'Blog / Articles', description: '1 article/mois sur "Marketing Digital en Guinée", "Conseils CM pour PME locales", "Réussir sa pub Facebook en Guinée".', category: 'contenu' },
+                { title: 'Études de Cas / Réalisations', description: 'Documenter chaque succès client pour construire un portfolio solide.', category: 'contenu' },
+                { title: 'Tutoriels Vidéo Courts', description: 'Créer des vidéos simples sur les bases de Facebook Ads ou la conception de visuels.', category: 'contenu' },
+                { title: 'Optimisation SEO Locale', description: 'Optimiser votre site pour les recherches locales (ex: "agence marketing Conakry", "graphiste Guinée").', category: 'seo' },
+                { title: 'Fiche Google My Business', description: 'Créer et optimiser votre fiche pour la visibilité locale.', category: 'seo' },
+                { title: 'Campagnes Facebook Ads (Agence)', description: 'Lancer des campagnes ciblées sur les PME et entrepreneurs en Guinée pour promouvoir vos services.', category: 'pub' },
+                { title: 'Offres de Lancement', description: 'Proposer des promotions spéciales pour attirer les premiers clients.', category: 'pub' },
+                { title: 'Présence Réseaux Sociaux', description: 'Partager votre expertise, les coulisses de l\'agence, et vos succès sur LinkedIn, Facebook, Instagram.', category: 'reseau' },
+                { title: 'Engagement Local', description: 'Interagir activement avec les entreprises et entrepreneurs locaux sur les plateformes sociales.', category: 'reseau' },
+                { title: 'Mise en Avant Graphisme', description: 'Utiliser vos propres réalisations graphiques pour promouvoir vos compétences.', category: 'contenu' },
+                { title: 'Réseautage Local', description: 'Participer aux événements locaux (chambres de commerce, incubateurs, salons).', category: 'reseau' },
+                { title: 'Partenariats Stratégiques', description: 'Collaborer avec des freelances complémentaires (développeurs web, rédacteurs) pour des projets plus larges.', category: 'reseau' },
+                { title: 'Consultations Gratuites', description: 'Offrir des consultations initiales gratuites pour générer des prospects qualifiés.', category: 'reseau' }
+            ];
+
+            const personaTabs = document.querySelectorAll('.persona-tab');
+            const personaContent = document.getElementById('persona-content');
+
+            function updatePersonaContent(personaKey) {
+                personaContent.innerHTML = personaData[personaKey].content;
+                personaTabs.forEach(t => {
+                    t.classList.remove('border-[#D4A373]');
+                    t.classList.add('border-transparent', 'text-gray-500');
+                    if (t.dataset.persona === personaKey) {
+                        t.classList.add('border-[#D4A373]');
+                        t.classList.remove('border-transparent', 'text-gray-500');
+                    }
+                });
+            }
+
+            personaTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    updatePersonaContent(tab.dataset.persona);
+                });
+            });
+
+            updatePersonaContent('pme');
+
+            const tacticsGrid = document.getElementById('tactics-grid');
+            const tacticsFilter = document.getElementById('tactics-filter');
+
+            function renderTactics(filter = 'all') {
+                tacticsGrid.innerHTML = '';
+                const filteredTactics = filter === 'all' ? tacticsData : tacticsData.filter(t => t.category === filter);
+                
+                filteredTactics.forEach(tactic => {
+                    const tacticCard = `
+                        <div class="card p-5">
+                            <h4 class="font-bold text-lg mb-2 text-[#383838]">${tactic.title}</h4>
+                            <p class="text-gray-600 text-sm">${tactic.description}</p>
+                        </div>
+                    `;
+                    tacticsGrid.innerHTML += tacticCard;
+                });
+            }
+
+            tacticsFilter.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    document.querySelectorAll('#tactics-filter button').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                    renderTactics(e.target.dataset.filter);
+                }
+            });
+
+            renderTactics();
+            
+            const budgetCtx = document.getElementById('budgetChart').getContext('2d');
+            new Chart(budgetCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Publicité Facebook (initial)', 'Outils Essentiels (logiciels, abonnements)', 'Formation & Développement', 'Réseautage & Événements'],
+                    datasets: [{
+                        label: 'Allocation du Budget Initial',
+                        data: [40, 30, 20, 10], // Adjusted percentages for a solo, pre-launch agency
+                        backgroundColor: ['#D4A373', '#E4CBA2', '#F3EFEA', '#A9A9A9'],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 10
+                                },
+                                boxWidth: 15,
+                                padding: 10
+                            }
+                        }
+                    }
+                }
+            });
+
+            const kpiCtx = document.getElementById('kpiChart').getContext('2d');
+            new Chart(kpiCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Prospects Contactés', 'Clients Acquis', 'Projets Portfolio', 'Engagement Social'],
+                    datasets: [{
+                        label: 'Objectif (3-9 mois)',
+                        data: [30, 3, 5, 200], // Adjusted targets for solo, pre-launch
+                        backgroundColor: '#D4A373',
+                        borderRadius: 5
+                    }, {
+                        label: 'Actuel (Lancement)',
+                        data: [0, 0, 0, 0], // Starting at zero for launch
+                        backgroundColor: '#EFEBE6',
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    }
+                }
+            });
+
+            const navLinks = document.querySelectorAll('#desktop-nav a');
+            const mobileNav = document.getElementById('mobile-nav');
+            const sections = document.querySelectorAll('main section');
+
+            function changeActiveLink() {
+                let index = sections.length;
+                while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
+                
+                navLinks.forEach((link) => link.classList.remove('active'));
+                if (navLinks[index]) {
+                   navLinks[index].classList.add('active');
+                   mobileNav.value = navLinks[index].getAttribute('href').substring(1);
+                }
+            }
+            
+            window.addEventListener('scroll', changeActiveLink);
+            changeActiveLink();
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            mobileNav.addEventListener('change', (e) => {
+                 document.querySelector(`#${e.target.value}`).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

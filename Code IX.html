@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre Agence Digitale en Guinée - Marketing, Graphisme, Community Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="Code IX.css">
+    <link rel="stylesheet" href="Untitled-1.html">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Définition de la police Inter pour tout le corps */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f8f8; /* Un gris très clair pour un fond doux */
+            color: #1a202c; /* Couleur de texte par défaut (presque noir) */
+        }
+
+        /* Styles personnalisés pour le message box */
+        .message-box {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50; /* Vert pour succès (peut rester ou être adapté) */
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none; /* Caché par défaut */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            font-weight: 500;
+        }
+        .message-box.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Animations personnalisées */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .animate-fade-in-down {
+            animation: fadeInDown 0.8s ease-out forwards;
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        /* Retards d'animation pour les éléments de la section Hero */
+        .hero-title {
+            animation-delay: 0.2s;
+        }
+        .hero-subtitle {
+            animation-delay: 0.4s;
+        }
+        .hero-cta {
+            animation-delay: 0.6s;
+        }
+
+        /* Effet de survol pour les cartes de service */
+        .service-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        /* Animation au clic pour les cartes de service */
+        .service-card.active {
+            border-color: #dc2626; /* Rouge */
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Style pour les liens de navigation actifs */
+        .nav-link.active {
+            color: #dc2626; /* Couleur rouge */
+            font-weight: 600;
+        }
+
+        /* Style pour les boutons au clic */
+        .btn-primary:active {
+            background-color: #b91c1c; /* Un rouge plus foncé au clic */
+            transform: scale(0.98);
+        }
+        .btn-secondary:active {
+            background-color: #e5e7eb; /* Un gris plus foncé au clic */
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body class="text-gray-900">
+
+    <div id="messageBox" class="message-box">
+        </div>
+
+    <header class="bg-white shadow-lg py-4 fixed w-full z-50 top-0 rounded-b-xl">
+        <div class="container mx-auto flex justify-between items-center px-6 md:px-8">
+            <a href="#" class="text-3xl font-extrabold text-red-600 rounded-lg p-2 transition duration-300 hover:text-red-800">
+              L'Agence IX
+            </a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#accueil" class="nav-link text-gray-700 hover:text-red-600 font-medium transition duration-300 py-2 px-3 rounded-md">Accueil</a>
+                <a href="#services" class="nav-link text-gray-700 hover:text-red-600 font-medium transition duration-300 py-2 px-3 rounded-md">Services</a>
+                <a href="#a-propos" class="nav-link text-gray-700 hover:text-red-600 font-medium transition duration-300 py-2 px-3 rounded-md">À Propos</a>
+                <a href="#temoignages" class="nav-link text-gray-700 hover:text-red-600 font-medium transition duration-300 py-2 px-3 rounded-md">Témoignages</a>
+                <a href="#contact" class="nav-link text-gray-700 hover:text-red-600 font-medium transition duration-300 py-2 px-3 rounded-md">Contact</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none p-2 rounded-md hover:bg-gray-100 transition duration-300">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        <div id="mobile-menu" class="md:hidden bg-white shadow-xl py-4 hidden rounded-b-xl">
+            <a href="#accueil" class="block px-6 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-300 rounded-md">Accueil</a>
+            <a href="#services" class="block px-6 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-300 rounded-md">Services</a>
+            <a href="#a-propos" class="block px-6 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-300 rounded-md">À Propos</a>
+            <a href="#temoignages" class="block px-6 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-300 rounded-md">Témoignages</a>
+            <a href="#contact" class="block px-6 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-300 rounded-md">Contact</a>
+        </div>
+    </header>
+
+    <div class="pt-20 md:pt-24"></div>
+
+    <section id="accueil" class="relative overflow-hidden bg-gradient-to-br from-gray-900 to-black text-white py-24 md:py-36 text-center rounded-b-3xl shadow-xl">
+        <div class="absolute inset-0 opacity-10" style="background-image: url('https://placehold.co/1920x1080/000000/FFFFFF?text=Pattern'); background-size: cover; background-position: center;"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6 hero-title animate-fade-in-down">
+                Propulsez votre succès digital en <span class="text-red-500">Guinée</span> !
+            </h1>
+            <p class="text-lg md:text-2xl mb-10 max-w-4xl mx-auto hero-subtitle animate-fade-in-up">
+                Nous sommes l'agence qu'il vous faut : Graphisme percutant, gestion de reseaux, et publicités sur Facebook.
+            </p>
+            <a href="#contact" class="inline-block btn-primary bg-red-600 text-white hover:bg-red-700 font-bold py-4 px-10 rounded-full shadow-lg transition duration-300 transform hover:scale-105 hero-cta animate-fade-in">
+                Demandez votre devis gratuit <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6 text-center max-w-5xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-8 animate-fade-in-up">Votre Partenaire Stratégique pour <span class="text-red-500">booster</span> votre entreprise</h2>
+            <p class="text-lg text-gray-700 leading-relaxed animate-fade-in">
+                Bienvenue chez <span class="font-semibold text-red-600">L'Agence IX</span>, votre allié de pointe pour une croissance et une renomée durable en Guinée. Nous sommes passionnés par l'idée d'aider les entreprises à se connecter authentiquement avec leur public et à surpasser leurs objectifs marketing grâce à des stratégies digitales innovantes et personnalisées.
+            </p>
+        </div>
+    </section>
+
+    <section id="services" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6 text-center max-w-5xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-14 animate-fade-in-up">Nos Solutions Digitales Complètes</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="service-card bg-white p-10 rounded-2xl shadow-lg text-center border border-gray-200 animate-fade-in-up">
+                    <div class="text-red-600 mb-6">
+                        <i class="fas fa-palette text-5xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Création <span class="text-red-500">Graphique</span></h3>
+                    <p class="text-gray-700 leading-relaxed mb-6">
+                        Des visuels qui racontent votre histoire et captivent votre audience. Nous transformons vos idées en designs mémorables.
+                    </p>
+                    <ul class="text-left text-gray-800 space-y-3">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Conception de logos et identités visuelles</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Création de chartes graphiques complètes</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Design de supports de communication (print & digital)</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Visuels optimisés pour les réseaux sociaux</li>
+                    </ul>
+                </div>
+
+
+                <div class="service-card bg-white p-10 rounded-2xl shadow-lg text-center border border-gray-200 animate-fade-in-up" style="animation-delay: 0.2s;">
+                    <div class="text-red-600 mb-6">
+                        <i class="fas fa-users text-5xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Community <span class="text-red-500">Management</span></h3>
+                    <p class="text-gray-700 leading-relaxed mb-6">
+                        Bâtissez une communauté engagée et fidèle. Nous gérons votre présence sociale pour maximiser l'interaction et la portée.
+                    </p>
+                    <ul class="text-left text-gray-800 space-y-3">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Stratégie de contenu personnalisée</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Création et publication de posts réguliers</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Modération active et interaction avec la communauté</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Rapports de performance détaillés</li>
+                    </ul>
+                </div>
+
+                <div class="service-card bg-white p-10 rounded-2xl shadow-lg text-center border border-gray-200 animate-fade-in-up">
+                    <div class="text-red-600 mb-6">
+                        <i class="fas fa-palette text-5xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Création de <span class="text-red-500">Site Web</span></h3>
+                    <p class="text-gray-700 leading-relaxed mb-6">
+                        Des visuels qui racontent votre histoire et captivent votre audience. Nous transformons vos idées en designs mémorables.
+                    </p>
+                    <ul class="text-left text-gray-800 space-y-3">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Conception de logos et identités visuelles</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Création de chartes graphiques complètes</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Design de supports de communication (print & digital)</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Visuels optimisés pour les réseaux sociaux</li>
+                    </ul>
+                </div>
+                
+                <div class="service-card bg-white p-10 rounded-2xl shadow-lg text-center border border-gray-200 animate-fade-in-up" style="animation-delay: 0.4s;">
+                    <div class="text-red-600 mb-6">
+                        <i class="fab fa-facebook-f text-5xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Publicité <span class="text-red-500">Facebook</span></h3>
+                    <p class="text-gray-700 leading-relaxed mb-6">
+                        Atteignez précisément votre clientèle idéale et optimisez vos dépenses publicitaires avec des campagnes ciblées.
+                    </p>
+                    <ul class="text-left text-gray-800 space-y-3">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Définition précise des objectifs et cibles</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Création de créatifs publicitaires percutants</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Mise en place et optimisation continue des campagnes</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Suivi rigoureux des performances et ajustements</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="a-propos" class="py-20 bg-white">
+        <div class="container mx-auto px-6 text-center max-w-5xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-14 animate-fade-in-up">Qui sommes<span class="text-red-500"> nous ?</span></h2>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-16 ">
+                <div class="md:w-1/2 animate-fade-in-up">
+                        Je suis <span class="font-semibold text-red-600">Mamadou Saliou Dramé</span>, le fondateur passionné de <span class="font-semibold text-red-600">L'Agence IX</span>. Fort de <span class="font-semibold">plus de 5 ans</span> d'expériences concrètes dans le marketing digital, j'ai fondé cette agence avec une vision claire : offrir aux entreprises guinéennes des solutions digitales de pointe, adaptées à leurs réalités et ambitions.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Ma mission est de vous accompagner personnellement à chaque étape, en vous offrant des stratégies sur mesure et un service client irréprochable. Votre succès est ma priorité.
+                    </p>
+                </div>
+                <div class="md:w-1/2 animate-fade-in-up" style="animation-delay: 0.2s;">
+                    <div class="w-48 h-48 md:w-64 md:h-64 mx-auto rounded-full overflow-hidden shadow-2xl border-4 border-red-200">
+                        <img src="c:\Users\DELL\Desktop\file_00000000501c6230a10a5bef74334ecf.png" alt="Votre Photo de Profil" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-20 text-center animate-fade-in-up">
+                <h3 class="text-2xl font-bold text-gray-900 mb-8">Nos <span class="text-red-500">Valeurs</span> Fondamentales</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="p-6 bg-gray-50 rounded-xl shadow-md border border-gray-100">
+                        <i class="fas fa-handshake text-4xl text-red-600 mb-4"></i>
+                        <h4 class="font-semibold text-xl mb-2">Proximité</h4>
+                        <p class="text-gray-700">Un accompagnement personnalisé et une écoute attentive de vos besoins.</p>
+                    </div>
+                    <div class="p-6 bg-gray-50 rounded-xl shadow-md border border-gray-100">
+                        <i class="fas fa-lightbulb text-4xl text-red-600 mb-4"></i>
+                        <h4 class="font-semibold text-xl mb-2">Créativité</h4>
+                        <p class="text-gray-700">Des idées fraîches et innovantes pour écraser la concurrence.</p>
+                    </div>
+                    <div class="p-6 bg-gray-50 rounded-xl shadow-md border border-gray-100">
+                        <i class="fas fa-chart-line text-4xl text-red-600 mb-4"></i>
+                        <h4 class="font-semibold text-xl mb-2">Résultats</h4>
+                        <p class="text-gray-700">Une approche axée sur la performance et l'atteinte de vos objectifs.</p>
+                    </div>
+                    <div class="p-6 bg-gray-50 rounded-xl shadow-md border border-gray-100">
+                        <i class="fas fa-shield-alt text-4xl text-red-600 mb-4"></i>
+                        <h4 class="font-semibold text-xl mb-2">Transparence</h4>
+                        <p class="text-gray-700">Des rapports clairs et une communication ouverte à chaque étape.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="temoignages" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-14 animate-fade-in-up">Ce que nos <span class="text-red-500">clients</span> disent</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-200 animate-fade-in-up">
+                    <div class="flex items-center mb-6">
+                        <img src="https://placehold.co/64x64/DC2626/FFFFFF?text=C1" alt="Client 1" class="w-16 h-16 rounded-full mr-4 border-2 border-red-300">
+                        <div>
+                            <p class="font-semibold text-lg text-gray-900">M. Diallo, DG de </p>
+                            <p class="text-sm text-gray-600">Conakry, Guinée</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-800 italic leading-relaxed mb-6">
+                        "Travailler avec L'Agence IX a été une révélation. Leur expertise en graphisme a transformé notre image de marque et leurs conseils en publicité Facebook ont généré des résultats concrets. Un partenaire indispensable !"
+                    </p>
+                    <div class="text-red-500">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-200 animate-fade-in-up" style="animation-delay: 0.2s;">
+                    <div class="flex items-center mb-6">
+                        <img src="https://placehold.co/64x64/DC2626/FFFFFF?text=C2" alt="Client 2" class="w-16 h-16 rounded-full mr-4 border-2 border-red-300">
+                        <div>
+                            <p class="font-semibold text-lg text-gray-900">Mme Bah, Gérante de DS Vente en ligne</p>
+                            <p class="text-sm text-gray-600">Dixinn, Guinée</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-800 italic leading-relaxed mb-6">
+                        "Le community management de L'Agence IX est exceptionnel. Nos réseaux sociaux sont vivants, nos clients interagissent et nous voyons une réelle croissance de notre engagement. Je recommande vivement !"
+                    </p>
+                    <div class="text-red-500">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-12 animate-fade-in">
+                <a href="#contact" class="inline-block btn-primary bg-red-600 text-white hover:bg-red-700 font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+                    Rejoignez nos clients satisfaits !
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-14 animate-fade-in-up"><span class="text-red-500">Contactez</span> nous</h2>
+            <div class="flex flex-col md:flex-row gap-12 items-start">
+                <div class="md:w-1/2 bg-gray-50 p-10 rounded-2xl shadow-xl border border-gray-200 animate-fade-in-up">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Envoyez-nous un message</h3>
+                    <form id="contactForm" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-gray-700 text-sm font-semibold mb-2">Nom Complet <span class="text-red-500">*</span></label>
+                            <input type="text" id="name" name="name" class="shadow-sm appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200" placeholder="Votre nom" required>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Adresse E-mail <span class="text-red-500">*</span></label>
+                            <input type="email" id="email" name="email" class="shadow-sm appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200" placeholder="votre@email.com" required>
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-gray-700 text-sm font-semibold mb-2">Numéro de Téléphone</label>
+                            <input type="tel" id="phone" name="phone" class="shadow-sm appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200" placeholder="+224 XXXXXXXXX">
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-gray-700 text-sm font-semibold mb-2">Sujet <span class="text-red-500">*</span></label>
+                            <input type="text" id="subject" name="subject" class="shadow-sm appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200" placeholder="Demande de devis, Partenariat, etc." required>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-700 text-sm font-semibold mb-2">Votre Message <span class="text-red-500">*</span></label>
+                            <textarea id="message" name="message" rows="6" class="shadow-sm appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200" placeholder="Décrivez votre projet ou votre question ici..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 w-full">
+                            Envoyer le Message <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="md:w-1/2 bg-gray-50 p-10 rounded-2xl shadow-xl border border-gray-200 animate-fade-in-up" style="animation-delay: 0.2s;">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Nos Coordonnées</h3>
+                    <div class="space-y-6 text-gray-700 text-lg">
+                        <p class="flex items-center">
+                            <i class="fas fa-phone-alt text-red-600 mr-4 text-xl"></i>
+                            <strong>Téléphone : </strong> <a href="tel:+224XXXXXXXXX" class="hover:underline text-red-600"> +224 620 02 88 13 </a>
+                        </p>
+                        <p class="flex items-center">
+                            <i class="fas fa-envelope text-red-600 mr-4 text-xl"></i>
+                            <strong>E-mail : </strong> <a href="mailto:contact@votredomaine.com" class="hover:underline text-red-600"> droum09@gmail.com </a>
+                        </p>
+                        <p class="flex items-center">
+                            <i class="fas fa-map-marker-alt text-red-600 mr-4 text-xl"></i>
+                            <strong>Adresse :</strong> Guinée, Conakry
+                        </p>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mt-10 mb-6">Suivez-nous sur les réseaux sociaux</h3>
+                    <div class="flex space-x-6 justify-center md:justify-start">
+                        <a href="https://facebook.com/votrepage" target="_blank" aria-label="Facebook" class="text-red-600 hover:text-red-800 transition duration-300 transform hover:scale-110">
+                            <i class="fab fa-facebook-square text-4xl"></i>
+                        </a>
+                        <a href="https://instagram.com/votrepage" target="_blank" aria-label="Instagram" class="text-red-600 hover:text-red-800 transition duration-300 transform hover:scale-110">
+                            <i class="fab fa-instagram-square text-4xl"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/votreprofil" target="_blank" aria-label="LinkedIn" class="text-red-600 hover:text-red-800 transition duration-300 transform hover:scale-110">
+                            <i class="fab fa-linkedin text-4xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-gray-300 py-10 rounded-t-3xl shadow-inner">
+        <div class="container mx-auto px-6 text-center md:flex md:justify-between md:items-center">
+            <p class="mb-6 md:mb-0 text-sm">&copy; 2025 L'Agence IX. Tous droits réservés.</p>
+            <nav class="space-x-6 text-sm">
+                <a href="#mentions-legales" class="hover:underline transition duration-300">Mentions Légales</a>
+                <a href="#politique-confidentialite" class="hover:underline transition duration-300">Politique de Confidentialité</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript pour le menu mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Cacher le menu mobile lors du clic sur un lien
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // JavaScript pour le formulaire de contact (simulation d'envoi)
+        const contactForm = document.getElementById('contactForm');
+        const messageBox = document.getElementById('messageBox');
+
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche l'envoi réel du formulaire
+
+            // Récupérer les données du formulaire (pour la démonstration)
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+
+            console.log('Formulaire soumis :');
+            console.log('Nom :', name);
+            console.log('Email :', email);
+            console.log('Sujet :', subject);
+            console.log('Message :', message);
+
+            // Simuler un envoi réussi
+            showMessage('Votre message a été envoyé avec succès ! Nous vous répondrons bientôt.', 'success');
+
+            // Réinitialiser le formulaire
+            contactForm.reset();
+        });
+
+        /**
+         * Affiche un message temporaire à l'utilisateur.
+         * @param {string} message - Le message à afficher.
+         * @param {string} type - Le type de message ('success' ou 'error').
+         */
+        function showMessage(message, type) {
+            messageBox.textContent = message;
+            if (type === 'success') {
+                messageBox.style.backgroundColor = '#4CAF50'; // Vert
+            } else {
+                messageBox.style.backgroundColor = '#f44336'; // Rouge
+            }
+            messageBox.classList.add('show');
+
+            // Cacher le message après 3 secondes
+            setTimeout(() => {
+                messageBox.classList.remove('show');
+            }, 3000);
+        }
+
+        // JavaScript pour les animations au scroll (Intersection Observer)
+        document.addEventListener('DOMContentLoaded', () => {
+            const animateElements = document.querySelectorAll('.animate-fade-in-up, .animate-fade-in-down, .animate-fade-in');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        entry.target.style.animationPlayState = 'running';
+                        observer.unobserve(entry.target); // Arrête d'observer une fois l'animation déclenchée
+                    } else {
+                        // Pour un effet "une seule fois", on ne réinitialise pas ici.
+                        // Si vous voulez que l'animation se rejoue à chaque fois que l'élément entre dans le champ de vision,
+                        // vous devriez remettre l'opacité à 0 et la transformation à sa position initiale ici.
+                    }
+                });
+            }, {
+                threshold: 0.1, // Déclenche quand 10% de l'élément est visible
+                rootMargin: '0px 0px -50px 0px' // Commence l'animation un peu avant que l'élément n'atteigne le bas de l'écran
+            });
+
+            animateElements.forEach(element => {
+                element.style.opacity = '0'; // Cache les éléments par défaut
+                element.style.transform = 'translateY(20px)'; // Positionne pour l'animation
+                element.style.animationFillMode = 'both'; // Garde l'état final de l'animation
+                element.style.animationPlayState = 'paused'; // Met l'animation en pause
+                observer.observe(element);
+            });
+        });
+
+        // JavaScript pour changer la classe 'active' du lien de navigation au scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100; // Ajustez le décalage si nécessaire
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.href.includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Animations au clic pour les cartes de service
+        const serviceCards = document.querySelectorAll('.service-card');
+        serviceCards.forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.classList.add('active');
+            });
+            card.addEventListener('mouseup', () => {
+                setTimeout(() => {
+                    card.classList.remove('active');
+                }, 150); // Retire la classe après un court délai
+            });
+            card.addEventListener('mouseleave', () => { // Au cas où la souris quitte avant mouseup
+                card.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
